@@ -31,39 +31,35 @@ function ResourceLoader(config) {
   
   	// Preload resources from init
 	this.preload = function() {
-		this.load(this.resourcesToLoad);
+		for (var i = 0; i < this.resourcesToLoad.length; i++) {
+			this.load(this.resourcesToLoad[i]);
+		}
   	}
   
 	// Do the actual work
-	this.load = function(resources) {
+	this.load = function(resource) {
 		
-		// Force array type -> refactor for loop into preload
-		if (!resources.length) {
-			resources = [resources];
+		var loadedResource;
+  
+		if (resource.type === "image") {
+			loadedResource		= new Image();
+			loadedResource.src	= resource.url;
+		} 
+		if (resource.type === "css") {
+			loadedResource 		= document.createElement("style");
+			loadedResource.type 	= "text/css";
+			loadedResource.href 	= resource.url;
 		}
-		for (var i = 0; i < resources; i++) {
-			var resource 	= resources[i],
-			type 		= resource.type,
-			url		= resource.url,
-			loadedResource;
-          
-			if (type === "image") {
-				loadedResource		= new Image();
-				loadedResource.src	= url;
-			} 
-			if (type === "css") {
-				loadedResource 		= document.createElement("style");
-				loadedResource.type 	= "text/css";
-				loadedResource.href 	= url;
-			}
-			if (type === "js") {
-				loadedResource 		= document.createElement("script");
-				loadedResource.type 	= "text/javascript";
-				loadedResource.src 	= url;
-			}
-      
-			// Use Array.push because we don't know the lenght
-			this.loadedResources.push(loadedResource);
+		if (resource.type === "js") {
+			loadedResource 		= document.createElement("script");
+			loadedResource.type 	= "text/javascript";
+			loadedResource.src 	= resource.url;
 		}
+
+		// Use Array.push because we don't know the lenght
+		this.loadedResources.push(loadedResource);
+		
+		// Return resource preloaded as DOM element
+		return loadedResource;
 	}
 }
