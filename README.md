@@ -30,7 +30,7 @@ Simply include `resource-loader.js` in your document and create an instance of `
       var resources = [
                         {
                           "type": "image",  
-                          "url": "path/to/image"           },
+                          "url": "path/to/image"
                         },
                         {
                           "type": "css",
