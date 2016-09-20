@@ -31,8 +31,10 @@ function ResourceLoader(config) {
   
   	// Preload resources from init
 	this.preload = function() {
-		for (var i = 0; i < this.resourcesToLoad.length; i++) {
-			this.load(this.resourcesToLoad[i]);
+		if (this.resourcesToLoad.length) {
+			for (var i = 0; i < this.resourcesToLoad.length; i++) {
+				this.load(this.resourcesToLoad[i]);
+			}
 		}
   	}
   
