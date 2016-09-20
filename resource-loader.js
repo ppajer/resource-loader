@@ -36,6 +36,11 @@ function ResourceLoader(config) {
   
 	// Do the actual work
 	this.load = function(resources) {
+		
+		// Force array type -> refactor for loop into preload
+		if (!resources.length) {
+			resources = [resources];
+		}
 		for (var i = 0; i < resources; i++) {
 			var resource 	= resources[i],
 			type 		= resource.type,
