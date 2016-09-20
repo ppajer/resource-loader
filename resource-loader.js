@@ -62,4 +62,7 @@ function ResourceLoader(config) {
 		// Return resource preloaded as DOM element
 		return loadedResource;
 	}
+	
+	// Initialize loader by scheduling preload time
+	this.bindLoad();
 }
