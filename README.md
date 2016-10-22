@@ -12,8 +12,9 @@ Simply include `resource-loader.js` in your document and create an instance of `
 
 #### Config options
 
-- **resources**: An array of objects, each with a `type` property with a value of `image`, `css` or `js` and an URL to reference the resource by. Possible values: `Array`, `undefined`. 
-- **onReady**: A boolean indicating if the resources need to be loaded as soon as the DOM is ready or after content has loaded. Possible values: `true`, `false`, `undefined`.
+- **resources**: An array of objects, each with a `type` property with a value of `image`, `css` or `js` and an URL to reference the resource by. Possible values: `Array`, `undefined`. Default: `[]`.
+- **onReady**: A boolean indicating if the resources need to be loaded as soon as the DOM is ready or after content has loaded. Possible values: `true`, `false`, `undefined`. Default: `true`.
+- **errors**: A boolean indicating whether the loader should throw hard errors or simply log them to the console while ignoring them. Possible values: `true`, `false`, `undefined`. Default: `true`.
 
 ## Full example
 ```html
@@ -39,7 +40,8 @@ Simply include `resource-loader.js` in your document and create an instance of `
                       ],
           config = {
             "resources" : resources,
-            "onReady"   : false // Load resources after window has finished loading.
+            "onReady"   : false, // Load resources after window has finished loading.
+            "errors"    : false // Disable hard errors
           },
           
           // Keep reference to object and automatically preload selected resources.
