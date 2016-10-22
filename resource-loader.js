@@ -1,7 +1,8 @@
 function ResourceLoader(config) {
 	
-	this.resourcesToLoad	= config.resources || [];
-	this.loadOnReady	= !!config.onReady;
+	this.errorType 		= config.errors 	|| true;
+	this.resourcesToLoad	= config.resources 	|| [];
+	this.loadOnReady	= config.onReady 	|| true;
 	this.loadedResources 	= [];
   
 	// For IE
@@ -42,6 +43,18 @@ function ResourceLoader(config) {
 	this.load = function(resource) {
 		
 		var loadedResource;
+		
+		if (!resource.type || !resource.url) {
+			
+			if (this.errors) {
+				
+				throw new Error('resource.type and resource.url are both mandatory!');
+				
+			} else {
+				
+				console.log('Error: resource.type and resource.url are both mandatory!', resource);
+			}
+		}
   
 		if (resource.type === "image") {
 			loadedResource		= new Image();
