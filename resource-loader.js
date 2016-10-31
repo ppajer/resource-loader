@@ -50,6 +50,18 @@ function ResourceLoader(config) {
 				console.log('Error: resource.type and resource.url are both mandatory!', resource);
 			}
 		}
+		
+		if (resource.type === "video") {
+		    	loadedResource 		= document.createElement("video");
+			loadedResource.src	= resource.url;
+			loadedResource.preload 	= true;
+		}
+		
+		if (resource.type === "audio") {
+			loadedResource 		= new Audio();
+			loadedResource.src	= resource.url;
+			loadedResource.preload 	= true;
+		}
   
 		if (resource.type === "image") {
 			loadedResource		= new Image();
