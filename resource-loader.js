@@ -12,16 +12,11 @@ function ResourceLoader(config) {
 		}
 	}
   
-	// For standard implementation
-	this.addEventListenerHandler = function(e) {
-		this.preload();
-	}
-  
 	// Determine preload timing and method
 	this.bindLoad = function() {
 		if (this.loadOnReady){
 			if (document.addEventListener) {
-  				document.addEventListener("DOMContentLoaded", this.addEventListenerHandler);
+  				document.addEventListener("DOMContentLoaded", this.preload);
   			} else {
   				document.attachEvent("onreadystatechange", this.attachEventHandler);
   			}
