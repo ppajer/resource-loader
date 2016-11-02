@@ -16,9 +16,9 @@ function ResourceLoader(config) {
 	this.bindLoad = function() {
 		if (this.loadOnReady){
 			if (document.addEventListener) {
-  				document.addEventListener("DOMContentLoaded", this.preload);
+  				document.addEventListener("DOMContentLoaded", this.preload.bind(this));
   			} else {
-  				document.attachEvent("onreadystatechange", this.attachEventHandler);
+  				document.attachEvent("onreadystatechange", this.attachEventHandler.bind(this));
   			}
 		} else {
 			window.onload = this.preload;
