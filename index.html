@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>resource-loader.js by ppajer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">resource-loader.js</h1>
+      <h2 class="project-tagline">A lightweight and straightforward resource loader written in JavaScript.</h2>
+      <a href="https://github.com/ppajer/resource-loader.js" class="btn">View on GitHub</a>
+      <a href="https://github.com/ppajer/resource-loader.js/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/ppajer/resource-loader.js/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="resource-loader" class="anchor" href="#resource-loader" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>resource-loader</h1>
+
+<p>This lightweight JavaScript resource loader aims to be as unobtrusive and straightforward as possible both in its goal and use. It can handle loading all types of resources during or after the page has loaded and can preload resources on the fly if needed.</p>
+
+<blockquote>
+<h3>
+<a id="important" class="anchor" href="#important" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Important</h3>
+
+<p>Most browsers don't cache resources by default unless instructed to. Unfortunately this cannot be done on the client side, so to get
+the most out of this library, you need to implement sending cache headers along with your assets. This can be done by configuring your 
+server appropriately or sending the headers through your server-side language of choice.</p>
+</blockquote>
+
+<h2>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works</h2>
+
+<p><strong>TLDR: it's magic and just works.</strong></p>
+
+<p>Resources are considered "loaded" when they are stored in the browser's memory. Resources are referenced by URLs. To load a resource by URL, the browser will first attempt to load it from its cache and will only download the URL's content if it fails to find it. Cached resources are loaded from disk instead of over the network, so they appear to be loaded near-instantly. This resource loader works by silently forcing the browser to download external resources in the background and caching them, allowing you to benefit from the speed of cache loading when you reference them by the same URL.</p>
+
+<h2>
+<a id="resource-types" class="anchor" href="#resource-types" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Resource types</h2>
+
+<p>This library supports the following resource types: <strong>script</strong>, <strong>style</strong>, <strong>image</strong>, <strong>audio</strong>, <strong>video</strong>. Although general support for these types of assets is provided across browsers, individual MIME type support is subject to browser implementation differences. <strong>Audio</strong> and <strong>video</strong> types require a HTML5 compliant browser and a <code>DOCTYPE</code> in order to function as expected.</p>
+
+<blockquote>
+<h3>
+<a id="note-for-preloading-html5-video" class="anchor" href="#note-for-preloading-html5-video" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Note for preloading HTML5 Video</h3>
+
+<p>This library uses the HTML5 Video API to preload videos, but cannot guarantee that the video format provided is supported by the
+current browser. This means you need to take care of determining which video formats are supported and select your assets to preload 
+accordingly. If you supply an unsupported video format, the loader will not complain, but the browser will.</p>
+</blockquote>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Simply include <code>resource-loader.js</code> in your document and create an instance of <code>ResourceLoader</code> with your preferred configuration. If you keep a reference to this object, you will be able to reuse it later on without having to instantialize a new one.</p>
+
+<h4>
+<a id="config-options" class="anchor" href="#config-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Config options</h4>
+
+<ul>
+<li>
+<strong>resources</strong>: An array of objects, each with a <code>type</code> property with a value of <code>image</code>, <code>css</code> or <code>js</code> and an URL to reference the resource by. Possible values: <code>Array</code>, <code>undefined</code>. Default: <code>[]</code>.</li>
+<li>
+<strong>onReady</strong>: A boolean indicating if the resources need to be loaded as soon as the DOM is ready or after content has loaded. Possible values: <code>true</code>, <code>false</code>, <code>undefined</code>. Default: <code>true</code>.</li>
+<li>
+<strong>errors</strong>: A boolean indicating whether the loader should throw hard errors or simply log them to the console while ignoring them. Possible values: <code>true</code>, <code>false</code>, <code>undefined</code>. Default: <code>true</code>.</li>
+</ul>
+
+<h2>
+<a id="full-example" class="anchor" href="#full-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Full example</h2>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">html</span>&gt;
+  &lt;<span class="pl-ent">head</span>&gt;
+    &lt;<span class="pl-ent">title</span>&gt;ResourceLoader Example&lt;/<span class="pl-ent">title</span>&gt;
+  &lt;/<span class="pl-ent">head</span>&gt;
+  &lt;<span class="pl-ent">body</span>&gt;
+    &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>yourPageContent<span class="pl-pds">"</span></span>&gt;
+      ...
+    &lt;/<span class="pl-ent">div</span>&gt;
+<span class="pl-s1">    &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>resource-loader.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s1">    &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;</span>
+<span class="pl-s1">      <span class="pl-k">var</span> resources <span class="pl-k">=</span> [</span>
+<span class="pl-s1">                        {</span>
+<span class="pl-s1">                          <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>image<span class="pl-pds">"</span></span>,  </span>
+<span class="pl-s1">                          <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>path/to/image<span class="pl-pds">"</span></span></span>
+<span class="pl-s1">                        },</span>
+<span class="pl-s1">                        {</span>
+<span class="pl-s1">                          <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>css<span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">                          <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>path/to/stylesheet<span class="pl-pds">"</span></span></span>
+<span class="pl-s1">                        }</span>
+<span class="pl-s1">                      ],</span>
+<span class="pl-s1">          config <span class="pl-k">=</span> {</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">"</span>resources<span class="pl-pds">"</span></span> <span class="pl-k">:</span> resources,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">"</span>onReady<span class="pl-pds">"</span></span>   <span class="pl-k">:</span> <span class="pl-c1">false</span>, <span class="pl-c">// Load resources after window has finished loading.</span></span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">"</span>errors<span class="pl-pds">"</span></span>    <span class="pl-k">:</span> <span class="pl-c1">false</span> <span class="pl-c">// Disable hard errors</span></span>
+<span class="pl-s1">          },</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">          <span class="pl-c">// Keep reference to object and automatically preload selected resources.</span></span>
+<span class="pl-s1">          loader <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ResourceLoader</span>(config);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">          <span class="pl-c">// Use the same instance to load new resources on the go.</span></span>
+<span class="pl-s1">          <span class="pl-k">var</span> newResource <span class="pl-k">=</span> {</span>
+<span class="pl-s1">                              <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>js<span class="pl-pds">"</span></span>,</span>
+<span class="pl-s1">                              <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>path/to/js<span class="pl-pds">"</span></span></span>
+<span class="pl-s1">                            };</span>
+<span class="pl-s1">          <span class="pl-smi">loader</span>.<span class="pl-c1">load</span>(newResource);</span>
+<span class="pl-s1">    &lt;/<span class="pl-ent">script</span>&gt;</span>
+  &lt;/<span class="pl-ent">body</span>&gt;
+
+&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
+
+<h2>
+<a id="roadmap" class="anchor" href="#roadmap" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Roadmap</h2>
+
+<p>This project is planned to introduce more features such as DOM element returns and AJAX loading in the future.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/ppajer/resource-loader.js">resource-loader.js</a> is maintained by <a href="https://github.com/ppajer">ppajer</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
